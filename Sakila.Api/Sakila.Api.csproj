@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Litmus.Core.AspNetCore\Litmus.Core.AspNetCore.csproj" />
+    <ProjectReference Include="..\Litmus.Core\Litmus.Core.csproj" />
+    <ProjectReference Include="..\Sakila\Sakila.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>App_Data/Documentation.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update="App_Data\Documentation.XML">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

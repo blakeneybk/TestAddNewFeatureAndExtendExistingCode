@@ -1,0 +1,12 @@
+[Bb]in/
+[Oo]bj/
+
+*.v2
+*.vs
+*.suo
+*.user
+*.sln.docstates
+
+
+*.nupkg
+Documentation.XML
