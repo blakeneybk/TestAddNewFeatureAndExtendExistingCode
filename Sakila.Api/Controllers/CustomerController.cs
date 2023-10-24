@@ -41,5 +41,15 @@ namespace Sakila.Api.Controllers
         [HttpGet("with-outstanding-rentals")]
         public Task<IEnumerable<CustomerOutstandingRentals>> CustomersWithOutstandingRentals(CancellationToken cancellationToken) =>
             outstandingRentalsRepository.OutstandingRentals(cancellationToken);
+
+        /// <summary>
+        /// List customers which currently have rentals checked out, filtered by store Id
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpGet("with-outstanding-rentals/store/{storeId:int}")]
+        public Task<IEnumerable<CustomerOutstandingRentals>> CustomersWithOutstandingRentalsByStoreId(int storeId, CancellationToken cancellationToken) =>
+            outstandingRentalsRepository.OutstandingRentalsByStore(storeId, cancellationToken);
     }
 }
