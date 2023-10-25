@@ -44,11 +44,11 @@ INNER JOIN country c2 on c.country_id = c2.country_id
         public async Task<bool> ValidateStoreId(int storeId, CancellationToken cancellationToken)
         {
             var sql = @"
-SELECT store_id
+SELECT COUNT(store_id)
 FROM store
 WHERE store_id = @StoreId";
             var parameters = new { StoreId = storeId };
-            return await databaseConnection.ExecuteAsync(sql, parameters, cancellationToken) > 0;
+            return await databaseConnection.ExecuteScalarAsync<int>(sql, parameters, cancellationToken) > 0;
         }
     }
 }

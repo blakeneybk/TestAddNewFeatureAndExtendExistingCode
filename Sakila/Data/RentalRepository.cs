@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Litmus.Core.Database;
-using Litmus.Core.Logging;
 using Sakila.Models;
 
 namespace Sakila.Data
