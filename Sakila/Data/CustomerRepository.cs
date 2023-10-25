@@ -24,9 +24,9 @@ namespace Sakila.Data
         public async Task<bool> ValidateCustomerId(int customerId, CancellationToken cancellationToken)
         {
             var sql = @"
-SELECT COUNT(customer_id)
-FROM customer
-WHERE customer_id = @CustomerId";
+                SELECT COUNT(customer_id)
+                FROM customer
+                WHERE customer_id = @CustomerId";
             var parameters = new { CustomerId = customerId };
             return await databaseConnection.ExecuteScalarAsync<int>(sql, parameters, cancellationToken) > 0;
         }
