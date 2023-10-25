@@ -28,7 +28,7 @@ namespace Sakila.Api.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
-        public Task<IEnumerable<Store>> GetAllStores(CancellationToken cancellationToken)
-            => repository.GetAllStores(cancellationToken);
+        public async Task<IEnumerable<Store>> GetAllStores(CancellationToken cancellationToken)
+            => await repository.GetAllStores(cancellationToken);
     }
 }
