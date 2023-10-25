@@ -16,11 +16,13 @@ namespace Sakila.Api.Configuration
             container.RegisterType<CustomerRepository>();
             container.RegisterType<OutstandingRentalsRepository>();
             container.RegisterType<StoreRepository>();
+            container.RegisterType<RentalRepository>();
 
             container.RegisterType<ArtistController>();
             container.RegisterType<CustomerController>();
             container.RegisterType<CategoryContoller>();
             container.RegisterType<StoreController>();
+            container.RegisterType<RentalController>();
         }
     }
 }
