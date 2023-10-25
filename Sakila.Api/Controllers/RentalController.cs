@@ -14,12 +14,14 @@ namespace Sakila.Api.Controllers
     public class RentalController : ControllerBase
     {
         private readonly RentalRepository _rentalRepository;
+        private readonly CustomerRepository _customerRepository;
         private readonly IStructuredLogger _logger;
 
-        public RentalController(IStructuredLogger logger, RentalRepository repository)
+        public RentalController(IStructuredLogger logger, RentalRepository repository, CustomerRepository customerRepository)
         {
-            this._rentalRepository = repository;
-            this._logger = logger;
+            _rentalRepository = repository;
+            _customerRepository = customerRepository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -34,7 +36,13 @@ namespace Sakila.Api.Controllers
         {
             try
             {
-                return Ok(await _rentalRepository.GetOutstandingRentalsByCustomerId(customerId, cancellationToken));
+                // best practice to only return empty results if the resource is actually valid, so let's check first
+                if (await _customerRepository.ValidateCustomerId(customerId, cancellationToken))
+                {
+                    return Ok(await _rentalRepository.GetOutstandingRentalsByCustomerId(customerId, cancellationToken));
+                }
+
+                return NotFound();
             }
             catch (Exception e)
             {
@@ -44,6 +52,12 @@ namespace Sakila.Api.Controllers
 
         }
 
+        /// <summary>
+        /// Sets the rental as returned.
+        /// </summary>
+        /// <param name="rentalId">The rental identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
         [HttpPut("{rentalId:int}/return")]
         public async Task<IActionResult> SetRentalAsReturned(int rentalId, CancellationToken cancellationToken)
         {

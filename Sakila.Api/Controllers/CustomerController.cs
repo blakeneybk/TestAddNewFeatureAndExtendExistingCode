@@ -53,8 +53,8 @@ namespace Sakila.Api.Controllers
         /// <summary>
         /// List customers which currently have rentals checked out, filtered by store Id
         /// </summary>
-        /// <param name="storeId"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
         [HttpGet("with-outstanding-rentals/store/{storeId:int}")]
         public async Task<IActionResult> CustomersWithOutstandingRentalsByStoreId(int storeId,
