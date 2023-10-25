@@ -41,7 +41,7 @@ ORDER BY p.rental_count DESC";
             return await databaseConnection.QueryAsync<CustomerOutstandingRentals>(sql, cancellationToken: cancellationToken);
         }
 
-        public async Task<IEnumerable<CustomerOutstandingRentals>> OutstandingRentalsByStore(int storeId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<CustomerOutstandingRentals>> OutstandingRentalsByStoreAsync(int storeId, CancellationToken cancellationToken)
         {
             var sql = $@"
 SELECT

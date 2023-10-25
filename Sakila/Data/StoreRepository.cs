@@ -41,7 +41,7 @@ INNER JOIN country c2 on c.country_id = c2.country_id
         /// <param name="storeId">The store identifier.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<bool> ValidateStoreId(int storeId, CancellationToken cancellationToken)
+        public async Task<bool> ValidateStoreIdAsync(int storeId, CancellationToken cancellationToken)
         {
             var sql = @"
 SELECT COUNT(store_id)

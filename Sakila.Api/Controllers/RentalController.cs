@@ -37,9 +37,9 @@ namespace Sakila.Api.Controllers
             try
             {
                 // best practice to only return empty results if the resource is actually valid, so let's check first
-                if (await customerRepository.ValidateCustomerId(customerId, cancellationToken))
+                if (await customerRepository.ValidateCustomerIdAsync(customerId, cancellationToken))
                 {
-                    return Ok(await rentalRepository.GetOutstandingRentalsByCustomerId(customerId, cancellationToken));
+                    return Ok(await rentalRepository.GetOutstandingRentalsByCustomerIdAsync(customerId, cancellationToken));
                 }
 
                 return NotFound();
@@ -64,7 +64,7 @@ namespace Sakila.Api.Controllers
             try
             {
                 var updated = false;
-                var rental = await rentalRepository.GetRentalById(rentalId, cancellationToken);
+                var rental = await rentalRepository.GetRentalByIdAsync(rentalId, cancellationToken);
 
                 if (rental == null)
                 {
@@ -73,11 +73,11 @@ namespace Sakila.Api.Controllers
 
                 if (rental.ReturnDate is null)
                 {
-                    updated = await rentalRepository.UpdateRentalReturnDate(rentalId, DateTime.Now, cancellationToken);
+                    updated = await rentalRepository.UpdateRentalReturnDateAsync(rentalId, DateTime.Now, cancellationToken);
                 }
 
                 //return an updated array of rentals so that the FE doesn't need to make a second API call or refresh to update the view
-                return updated ? Ok(await rentalRepository.GetOutstandingRentalsByCustomerId(rental.CustomerId, cancellationToken)) : Conflict();
+                return updated ? Ok(await rentalRepository.GetOutstandingRentalsByCustomerIdAsync(rental.CustomerId, cancellationToken)) : Conflict();
             }
             catch (Exception e)
             {

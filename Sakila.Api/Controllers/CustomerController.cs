@@ -63,9 +63,9 @@ namespace Sakila.Api.Controllers
             try
             {
                 // validate storeId
-                if (await storeRepository.ValidateStoreId(storeId, cancellationToken))
+                if (await storeRepository.ValidateStoreIdAsync(storeId, cancellationToken))
                 {
-                    return Ok(await outstandingRentalsRepository.OutstandingRentalsByStore(storeId, cancellationToken));
+                    return Ok(await outstandingRentalsRepository.OutstandingRentalsByStoreAsync(storeId, cancellationToken));
                 }
                 return NotFound();
             }

@@ -17,7 +17,7 @@ namespace Sakila.Data
             this.databaseConnection = databaseConnection;
         }
 
-        public async Task<IEnumerable<Rental>> GetOutstandingRentalsByCustomerId(int customerId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Rental>> GetOutstandingRentalsByCustomerIdAsync(int customerId, CancellationToken cancellationToken)
         {
             var sql = @"
 SELECT
@@ -46,7 +46,7 @@ ORDER BY f.title ASC";
             return await databaseConnection.QueryAsync<Rental>(sql, parameters, cancellationToken: cancellationToken);
         }
 
-        public async Task<Rental> GetRentalById(int rentalId, CancellationToken cancellationToken)
+        public async Task<Rental> GetRentalByIdAsync(int rentalId, CancellationToken cancellationToken)
         {
             var sql = @"
 SELECT
@@ -74,7 +74,7 @@ WHERE r.rental_id = @RentalId";
                 .FirstOrDefault();
         }
 
-        public async Task<bool> UpdateRentalReturnDate(int rentalId, DateTime? returnDate, CancellationToken cancellationToken)
+        public async Task<bool> UpdateRentalReturnDateAsync(int rentalId, DateTime? returnDate, CancellationToken cancellationToken)
         {
             var sql = @"
 UPDATE rental

@@ -21,7 +21,7 @@ namespace Sakila.Data
         /// <param name="customerId">The store identifier.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<bool> ValidateCustomerId(int customerId, CancellationToken cancellationToken)
+        public async Task<bool> ValidateCustomerIdAsync(int customerId, CancellationToken cancellationToken)
         {
             var sql = @"
                 SELECT COUNT(customer_id)
