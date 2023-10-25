@@ -10,6 +10,7 @@ namespace Sakila.Models
         public string Title { get; set; }
         public string StoreName { get; set; }
         public int StoreId { get; set; }
+        public int CustomerId { get; set; }
         public DateTime RentalDate { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime? ReturnDate { get; set; }

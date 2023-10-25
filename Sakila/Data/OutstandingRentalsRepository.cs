@@ -61,12 +61,13 @@ INNER JOIN (
     INNER JOIN inventory i on r.inventory_id = i.inventory_id
     INNER JOIN film f on i.film_id = f.film_id
     WHERE r.return_date IS NULL
-    AND i.store_id = {storeId}
+    AND i.store_id = @StoreId
     GROUP BY c.customer_id
 ) p ON p.customer_id = c.customer_id
 ORDER BY p.rental_count DESC";
 
-            return await databaseConnection.QueryAsync<CustomerOutstandingRentals>(sql, cancellationToken: cancellationToken);
+            var parameters = new { StoreId = storeId };
+            return await databaseConnection.QueryAsync<CustomerOutstandingRentals>(sql, parameters, cancellationToken: cancellationToken);
         }
     }
 }
