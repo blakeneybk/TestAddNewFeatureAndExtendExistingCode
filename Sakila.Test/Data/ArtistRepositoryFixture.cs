@@ -34,5 +34,17 @@ namespace Sakila.Test.Data
             Assert.That(firstArtist.FirstName, Is.EqualTo("PENELOPE"));
             Assert.That(firstArtist.LastName, Is.EqualTo("GUINESS"));
         }
+
+        [Test]
+        public async Task GetArtistByIdReturnsExpectedValue()
+        {
+            var artist = await repository.GetArtistByIdAsync(6,CancellationToken.None);
+
+            Assert.IsNotNull(artist);
+
+            Assert.That(artist.ArtistId, Is.EqualTo(6));
+            Assert.That(artist.FirstName, Is.EqualTo("BETTE"));
+            Assert.That(artist.LastName, Is.EqualTo("NICHOLSON"));
+        }
     }
 }

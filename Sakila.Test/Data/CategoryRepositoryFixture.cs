@@ -32,5 +32,16 @@ namespace Sakila.Test.Data
             Assert.That(firstCategory.CategoryId, Is.EqualTo(1));
             Assert.That(firstCategory.Name, Is.EqualTo("Action"));
         }
+
+        [Test]
+        public async Task GetCategoryByIdReturnsExpectedValue()
+        {
+            var rv = await repository.GetCategoryByIdAsync(5,CancellationToken.None);
+
+            Assert.IsNotNull(rv);
+
+            Assert.That(rv.CategoryId, Is.EqualTo(5));
+            Assert.That(rv.Name, Is.EqualTo("Comedy"));
+        }
     }
 }
