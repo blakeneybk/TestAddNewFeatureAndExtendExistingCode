@@ -18,14 +18,14 @@ namespace Sakila.Api.Controllers
         private readonly CustomerRepository customerRepository;
         private readonly OutstandingRentalsRepository outstandingRentalsRepository;
         private readonly StoreRepository storeRepository;
-        private readonly IStructuredLogger _logger;
+        private readonly IStructuredLogger logger;
 
         public CustomerController(IStructuredLogger logger,
             CustomerRepository customerRepository,
             OutstandingRentalsRepository outstandingRentalsRepository,
             StoreRepository storeRepository)
         {
-            this._logger = logger;
+            this.logger = logger;
             this.customerRepository = customerRepository;
             this.outstandingRentalsRepository = outstandingRentalsRepository;
             this.storeRepository = storeRepository;
@@ -71,7 +71,7 @@ namespace Sakila.Api.Controllers
             }
             catch (Exception e)
             {
-                _logger.Error(e,e.Message);
+                logger.Error(e,e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

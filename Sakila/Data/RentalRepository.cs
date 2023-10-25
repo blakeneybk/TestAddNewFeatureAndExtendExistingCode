@@ -10,11 +10,11 @@ namespace Sakila.Data
 {
     public class RentalRepository
     {
-        private readonly SakilaSqliteDatabaseConnection _databaseConnection;
+        private readonly SakilaSqliteDatabaseConnection databaseConnection;
 
         public RentalRepository(SakilaSqliteDatabaseConnection databaseConnection)
         {
-            this._databaseConnection = databaseConnection;
+            this.databaseConnection = databaseConnection;
         }
 
         public async Task<IEnumerable<Rental>> GetOutstandingRentalsByCustomerId(int customerId, CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ WHERE r.customer_id = @CustomerId
 AND r.return_date IS NULL
 ORDER BY f.title ASC";
             var parameters = new { CustomerId = customerId };
-            return await _databaseConnection.QueryAsync<Rental>(sql, parameters, cancellationToken: cancellationToken);
+            return await databaseConnection.QueryAsync<Rental>(sql, parameters, cancellationToken: cancellationToken);
         }
 
         public async Task<Rental> GetRentalById(int rentalId, CancellationToken cancellationToken)
@@ -70,7 +70,7 @@ INNER JOIN (
 ) store_city ON i.store_id = store_city.store_id
 WHERE r.rental_id = @RentalId";
             var parameters = new { RentalId = rentalId };
-            return (await _databaseConnection.QueryAsync<Rental>(sql, parameters, cancellationToken: cancellationToken))
+            return (await databaseConnection.QueryAsync<Rental>(sql, parameters, cancellationToken: cancellationToken))
                 .FirstOrDefault();
         }
 
@@ -81,7 +81,7 @@ UPDATE rental
 SET return_date = @ReturnDate
 WHERE rental_id = @RentalId";
             var parameters = new { ReturnDate = returnDate, RentalId = rentalId };
-            var affectedRows = await _databaseConnection.ExecuteAsync(sql, parameters, cancellationToken: cancellationToken);
+            var affectedRows = await databaseConnection.ExecuteAsync(sql, parameters, cancellationToken: cancellationToken);
     
             return affectedRows > 0;
         }

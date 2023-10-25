@@ -13,15 +13,15 @@ namespace Sakila.Api.Controllers
     [PublicApi]
     public class RentalController : ControllerBase
     {
-        private readonly RentalRepository _rentalRepository;
-        private readonly CustomerRepository _customerRepository;
-        private readonly IStructuredLogger _logger;
+        private readonly RentalRepository rentalRepository;
+        private readonly CustomerRepository customerRepository;
+        private readonly IStructuredLogger logger;
 
-        public RentalController(IStructuredLogger logger, RentalRepository repository, CustomerRepository customerRepository)
+        public RentalController(IStructuredLogger logger, RentalRepository rentalRepository, CustomerRepository customerRepository)
         {
-            _rentalRepository = repository;
-            _customerRepository = customerRepository;
-            _logger = logger;
+            this.rentalRepository = rentalRepository;
+            this.customerRepository = customerRepository;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -37,16 +37,16 @@ namespace Sakila.Api.Controllers
             try
             {
                 // best practice to only return empty results if the resource is actually valid, so let's check first
-                if (await _customerRepository.ValidateCustomerId(customerId, cancellationToken))
+                if (await customerRepository.ValidateCustomerId(customerId, cancellationToken))
                 {
-                    return Ok(await _rentalRepository.GetOutstandingRentalsByCustomerId(customerId, cancellationToken));
+                    return Ok(await rentalRepository.GetOutstandingRentalsByCustomerId(customerId, cancellationToken));
                 }
 
                 return NotFound();
             }
             catch (Exception e)
             {
-                _logger.Error(e, e.Message);
+                logger.Error(e, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
@@ -64,7 +64,7 @@ namespace Sakila.Api.Controllers
             try
             {
                 var updated = false;
-                var rental = await _rentalRepository.GetRentalById(rentalId, cancellationToken);
+                var rental = await rentalRepository.GetRentalById(rentalId, cancellationToken);
 
                 if (rental == null)
                 {
@@ -73,15 +73,15 @@ namespace Sakila.Api.Controllers
 
                 if (rental.ReturnDate is null)
                 {
-                    updated = await _rentalRepository.UpdateRentalReturnDate(rentalId, DateTime.Now, cancellationToken);
+                    updated = await rentalRepository.UpdateRentalReturnDate(rentalId, DateTime.Now, cancellationToken);
                 }
 
                 //return an updated array of rentals so that the FE doesn't need to make a second API call or refresh to update the view
-                return updated ? Ok(await _rentalRepository.GetOutstandingRentalsByCustomerId(rental.CustomerId, cancellationToken)) : Conflict();
+                return updated ? Ok(await rentalRepository.GetOutstandingRentalsByCustomerId(rental.CustomerId, cancellationToken)) : Conflict();
             }
             catch (Exception e)
             {
-                _logger.Error(e, e.Message);
+                logger.Error(e, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
