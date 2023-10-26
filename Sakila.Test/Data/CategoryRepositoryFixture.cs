@@ -11,6 +11,7 @@ using Sakila.Data;
 
 namespace Sakila.Test.Data
 {
+    //THIS TEST FIXTURE REQUIRES A FRESH UNMODIFIED DOWNLOAD OF THE SAKILA DB
     [TestFixture]
     public class CategoryRepositoryFixture
     {
@@ -42,6 +43,14 @@ namespace Sakila.Test.Data
 
             Assert.That(rv.CategoryId, Is.EqualTo(5));
             Assert.That(rv.Name, Is.EqualTo("Comedy"));
+        }
+
+        [Test]
+        public async Task GetCategoryByIdBadIdReturnsExpectedValue()
+        {
+            var rv = await repository.GetCategoryByIdAsync(565465,CancellationToken.None);
+
+            Assert.IsNull(rv);
         }
     }
 }

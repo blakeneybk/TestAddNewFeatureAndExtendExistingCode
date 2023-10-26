@@ -11,6 +11,7 @@ using Sakila.Data;
 
 namespace Sakila.Test.Data
 {
+    //THIS TEST FIXTURE REQUIRES A FRESH UNMODIFIED DOWNLOAD OF THE SAKILA DB
     [TestFixture]
     public class ArtistRepositoryFixture
     {
@@ -45,6 +46,14 @@ namespace Sakila.Test.Data
             Assert.That(artist.ArtistId, Is.EqualTo(6));
             Assert.That(artist.FirstName, Is.EqualTo("BETTE"));
             Assert.That(artist.LastName, Is.EqualTo("NICHOLSON"));
+        }
+
+        [Test]
+        public async Task GetArtistByIdBadIdReturnsExpectedValue()
+        {
+            var artist = await repository.GetArtistByIdAsync(6564654,CancellationToken.None);
+
+            Assert.IsNull(artist);
         }
     }
 }

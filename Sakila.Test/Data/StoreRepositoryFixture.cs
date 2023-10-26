@@ -8,6 +8,7 @@ using Sakila.Data;
 
 namespace Sakila.Test.Data
 {
+    //THIS TEST FIXTURE REQUIRES A FRESH UNMODIFIED DOWNLOAD OF THE SAKILA DB
     [TestFixture]
     public class StoreRepositoryFixture
     {

@@ -11,6 +11,7 @@ using Sakila.Data;
 
 namespace Sakila.Test.Data
 {
+    //THIS TEST FIXTURE REQUIRES A FRESH UNMODIFIED DOWNLOAD OF THE SAKILA DB
     [TestFixture]
     public class OutstandingRentalsRepositoryFixture
     {
@@ -38,16 +39,15 @@ namespace Sakila.Test.Data
         [Test]
         public async Task OutstandingRentalsByStoreIdReturnsCorrectCustomerRecords()
         {
-            //This test requires a fresh unmodified download of the sakila db
             var customers = await repository.OutstandingRentalsByStoreAsync(1,CancellationToken.None);
             CollectionAssert.IsNotEmpty(customers);
 
             var firstCustomer = customers.First();
 
-            Assert.Equals(firstCustomer.FirstName, "MILDRED");
-            Assert.Equals(firstCustomer.LastName, "BAILEY");
-            Assert.Equals(firstCustomer.Email, "MILDRED.BAILEY@sakilacustomer.org");
-            Assert.Equals(firstCustomer.OutstandingRentals, 2);
+            Assert.AreEqual(firstCustomer.FirstName, "MILDRED");
+            Assert.AreEqual(firstCustomer.LastName, "BAILEY");
+            Assert.AreEqual(firstCustomer.Email, "MILDRED.BAILEY@sakilacustomer.org");
+            Assert.AreEqual(firstCustomer.OutstandingRentals, 2);
         }
     }
 }
