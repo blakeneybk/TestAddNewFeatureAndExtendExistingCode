@@ -15,22 +15,6 @@ namespace Sakila.Data
             this.databaseConnection = databaseConnection;
         }
 
-        /// <summary>
-        /// A lightweight resource validator for checking customer ids
-        /// </summary>
-        /// <param name="customerId">The store identifier.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns></returns>
-        public async Task<bool> ValidateCustomerIdAsync(int customerId, CancellationToken cancellationToken)
-        {
-            var sql = @"
-                SELECT COUNT(customer_id)
-                FROM customer
-                WHERE customer_id = @CustomerId";
-            var parameters = new { CustomerId = customerId };
-            return await databaseConnection.ExecuteScalarAsync<int>(sql, parameters, cancellationToken) > 0;
-        }
-
         public async Task<CustomerDetails> GetCustomerDetails(int customerId, CancellationToken cancellationToken)
         {
             var parameters = new { CustomerId = customerId };
@@ -105,6 +89,22 @@ namespace Sakila.Data
             {
                 return await databaseConnection.ExecuteScalarAsync<int>(query, parameters, cancellationToken);
             }
+        }
+
+        /// <summary>
+        /// A lightweight resource validator for checking customer ids
+        /// </summary>
+        /// <param name="customerId">The store identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> ValidateCustomerIdAsync(int customerId, CancellationToken cancellationToken)
+        {
+            var sql = @"
+                SELECT COUNT(customer_id)
+                FROM customer
+                WHERE customer_id = @CustomerId";
+            var parameters = new { CustomerId = customerId };
+            return await databaseConnection.ExecuteScalarAsync<int>(sql, parameters, cancellationToken) > 0;
         }
     }
 }
