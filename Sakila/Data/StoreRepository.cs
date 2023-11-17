@@ -34,5 +34,21 @@ INNER JOIN country c2 on c.country_id = c2.country_id
 
             return await databaseConnection.QueryAsync<Store>(sql, cancellationToken: cancellationToken);
         }
+
+        /// <summary>
+        /// A lightweight resource validator for checking store ids
+        /// </summary>
+        /// <param name="storeId">The store identifier.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<bool> ValidateStoreIdAsync(int storeId, CancellationToken cancellationToken)
+        {
+            var sql = @"
+SELECT COUNT(store_id)
+FROM store
+WHERE store_id = @StoreId";
+            var parameters = new { StoreId = storeId };
+            return await databaseConnection.ExecuteScalarAsync<int>(sql, parameters, cancellationToken) > 0;
+        }
     }
 }

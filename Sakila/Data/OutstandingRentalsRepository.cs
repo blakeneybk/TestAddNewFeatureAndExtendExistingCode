@@ -40,5 +40,33 @@ ORDER BY p.rental_count DESC";
 
             return await databaseConnection.QueryAsync<CustomerOutstandingRentals>(sql, cancellationToken: cancellationToken);
         }
+
+        public async Task<IEnumerable<CustomerOutstandingRentals>> OutstandingRentalsByStoreAsync(int storeId, CancellationToken cancellationToken)
+        {
+            var sql = $@"
+SELECT
+       c.customer_id AS CustomerId,
+       c.first_name AS FirstName,
+       c.last_name AS LastName,
+       c.email AS Email,
+       p.rental_count AS OutstandingRentals
+FROM customer c
+INNER JOIN (
+    SELECT 
+        c.customer_id, 
+        COUNT(r.rental_id) rental_count
+    FROM customer c
+    INNER JOIN rental r on c.customer_id = r.customer_id
+    INNER JOIN inventory i on r.inventory_id = i.inventory_id
+    INNER JOIN film f on i.film_id = f.film_id
+    WHERE r.return_date IS NULL
+    AND i.store_id = @StoreId
+    GROUP BY c.customer_id
+) p ON p.customer_id = c.customer_id
+ORDER BY p.rental_count DESC";
+
+            var parameters = new { StoreId = storeId };
+            return await databaseConnection.QueryAsync<CustomerOutstandingRentals>(sql, parameters, cancellationToken: cancellationToken);
+        }
     }
 }

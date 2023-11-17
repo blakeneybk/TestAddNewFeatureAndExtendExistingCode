@@ -47,5 +47,24 @@ namespace Litmus.Core.Database
                 return results;
             }
         }
+
+        /// <summary>
+        /// Executes a scalar sql command and maps the resulting data to the type specified by TQuery
+        /// </summary>
+        /// <typeparam name="TQuery">The type to map the data result to</typeparam>
+        /// <param name="connectionString"></param>
+        /// <param name="sql">SQL command to execute</param>
+        /// <param name="param">Parameters for query</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Returns of query mapped to the specified type</returns>
+        public static async Task<TQuery> ExecuteScalarAsync<TQuery>(this IDatabaseConnection connectionString, string sql, object param = null, CancellationToken cancellationToken = default)
+        {
+            using (var connection = await connectionString.OpenConnection(cancellationToken: cancellationToken))
+            {
+                var results = await connection.ExecuteScalarAsync<TQuery>(sql, param);
+                connection.Close();
+                return results;
+            }
+        }
     }
 }

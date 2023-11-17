@@ -8,6 +8,7 @@ using Sakila.Data;
 
 namespace Sakila.Test.Data
 {
+    //THIS TEST FIXTURE REQUIRES A FRESH UNMODIFIED DOWNLOAD OF THE SAKILA DB
     [TestFixture]
     public class StoreRepositoryFixture
     {
@@ -33,6 +34,18 @@ namespace Sakila.Test.Data
             Assert.That(firstStore.PostalCode, Is.Empty);
             Assert.That(firstStore.City, Is.EqualTo("Lethbridge"));
             Assert.That(firstStore.Country, Is.EqualTo("Canada"));
+        }
+
+        [Test]
+        public async Task ValidateStoreIdAsyncReturnsExistingReturnsTrue()
+        {
+            Assert.IsTrue(await repository.ValidateStoreIdAsync(1, CancellationToken.None));
+        }
+
+        [Test]
+        public async Task ValidateStoreIdAsyncReturnsNotExistingReturnsFalse()
+        {
+            Assert.IsFalse(await repository.ValidateStoreIdAsync(654986498, CancellationToken.None));
         }
     }
 }
