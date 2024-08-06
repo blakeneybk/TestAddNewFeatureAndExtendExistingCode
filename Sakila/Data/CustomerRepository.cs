@@ -33,8 +33,6 @@ namespace Sakila.Data
             // If the customer does not exist, return null
             if (customer == null) return null;
 
-            var favoriteInfo = new FavoriteInfo();
-
             // SQL query to identify the actor associated with the films most rented by a specific customer. 
             // It calculates this based on the frequency of rentals for films that certain actors star in.
             const string favoriteActorSql = @"
@@ -48,8 +46,6 @@ namespace Sakila.Data
                 GROUP BY fa.actor_id
                 ORDER BY COUNT(r.rental_id) DESC
                 LIMIT 1";
-            
-            favoriteInfo.ActorId = await GetFavoriteEntityIdAsync(favoriteActorSql);
 
             // SQL query to retrieve the film ID most frequently rented by a specific customer, 
             // considering all inventory items as instances of the same film, not as unique items.
@@ -61,8 +57,6 @@ namespace Sakila.Data
                 GROUP BY i.film_id
                 ORDER BY COUNT(r.rental_id) DESC
                 LIMIT 1";
-
-            favoriteInfo.FilmId = await GetFavoriteEntityIdAsync(favoriteFilmSql);
 
             // SQL query to determine the customer's favorite film category based on their rental history.
             // This identifies the most frequently rented category by counting rentals within each film category for the customer.
@@ -76,12 +70,15 @@ namespace Sakila.Data
                 ORDER BY COUNT(r.rental_id) DESC
                 LIMIT 1";
 
-            favoriteInfo.CategoryId = await GetFavoriteEntityIdAsync(favoriteCategorySql);
+            var favoriteActorTask = GetFavoriteEntityIdAsync(favoriteActorSql);
+            var favoriteFilmTask = GetFavoriteEntityIdAsync(favoriteFilmSql);
+            var favoriteCategoryTask = GetFavoriteEntityIdAsync(favoriteCategorySql);
 
-            // Populate the customer details object with favorite information
-            customer.FavoriteArtistId = favoriteInfo.ActorId;
-            customer.FavoriteMovieId = favoriteInfo.FilmId;
-            customer.FavoriteCategoryId = favoriteInfo.CategoryId;
+            await Task.WhenAll(favoriteActorTask, favoriteFilmTask, favoriteCategoryTask);
+
+            customer.FavoriteArtistId = await favoriteActorTask;
+            customer.FavoriteMovieId = await favoriteFilmTask;
+            customer.FavoriteCategoryId = await favoriteCategoryTask;
 
             return customer;
 
@@ -99,7 +96,7 @@ namespace Sakila.Data
         /// <returns></returns>
         public async Task<bool> ValidateCustomerIdAsync(int customerId, CancellationToken cancellationToken)
         {
-            var sql = @"
+            const string sql = @"
                 SELECT COUNT(customer_id)
                 FROM customer
                 WHERE customer_id = @CustomerId";

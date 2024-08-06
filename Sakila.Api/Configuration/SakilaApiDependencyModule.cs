@@ -21,7 +21,7 @@ namespace Sakila.Api.Configuration
 
             container.RegisterType<ArtistController>();
             container.RegisterType<CustomerController>();
-            container.RegisterType<CategoryContoller>();
+            container.RegisterType<CategoryController>();
             container.RegisterType<StoreController>();
             container.RegisterType<RentalController>();
             container.RegisterType<MovieController>();
