@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Litmus.Core.AspNetCore.Documentation;
@@ -28,7 +26,7 @@ namespace Sakila.Api.Controllers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpGet]
-        public Task<IEnumerable<Store>> GetAllStores(CancellationToken cancellationToken)
-            => repository.GetAllStores(cancellationToken);
+        public async Task<IEnumerable<Store>> GetAllStores(CancellationToken cancellationToken)
+            => await repository.GetAllStores(cancellationToken);
     }
 }
